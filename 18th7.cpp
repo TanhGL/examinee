@@ -2,71 +2,75 @@
 using namespace std;
 
 struct Node {
-    int data;
+    int value;
     Node* next;
 };
 
-Node* createNode(int data) {
-    Node* newNode = new Node;
-    newNode->data = data;
-    newNode->next = nullptr;
-    return newNode;
-}
+class LinkedList {
+    Node* head;
+    Node* tail;
 
-void addNode(Node*& head, int data) {
-    Node* newNode = createNode(data);
-    if (newNode == nullptr)
-        return;
-    if (head == nullptr) {
-        head = newNode;
+public:
+    LinkedList() {
+        head = NULL;
+        tail = NULL;
     }
-    else {
-        Node* tail = head;
-        while (tail->next != nullptr)
-            tail = tail->next;
-        tail->next = newNode;
-    }
-}
 
-void printList(Node* head) {
-    Node* currNode = head;
-    while (currNode != nullptr) {
-        cout << currNode->data << " ";
-        currNode = currNode->next;
-    }
-    cout << endl;
-}
+    void addTail(int value) {
+        Node* newNode = new Node;
+        newNode->value = value;
+        newNode->next = NULL;
 
-void printReverseList(Node* head) {
-    if (head == nullptr)
-        return;
-    printReverseList(head->next);
-    cout << head->data << " ";
-}
-
-void deleteList(Node*& head) {
-    Node* currNode;
-    while (head != nullptr) {
-        currNode = head;
-        head = head->next;
-        delete currNode;
+        if (head == NULL) {
+            head = tail = newNode;
+        } else {
+            tail->next = newNode;
+            tail = newNode;
+        }
     }
-}
+
+    void print() {
+        Node* pCur = head;
+        while (pCur != NULL) {
+            cout << pCur->value << " ";
+            pCur = pCur->next;
+        }
+        cout << endl;
+    }
+
+    void printReverse() {
+        printReverseUtil(head);
+        cout << endl;
+    }
+
+private:
+    void printReverseUtil(Node* node) {
+        if (node == NULL) {
+            return;
+        }
+        printReverseUtil(node->next);
+        cout << node->value << " ";
+    }
+};
 
 int main() {
-    Node* head = nullptr;
-    int data;z
-    while (data != -1) {
-        addNode(head, data);
-        cin >> data;
+    LinkedList list;
+    int value;
+
+    //cout << "Nhập các số nguyên theo thứ tự tăng dần (dừng khi gặp -1):\n";
+    while (true) {
+        cin >> value;
+        if (value == -1) {
+            break;
+        }
+        list.addTail(value);
     }
 
-    cout << "Danh sach lien ket theo thu tu ban nhap vao: ";
-    printList(head);
+    cout << "Danh sách từ đầu đến cuối: ";
+    list.print();
 
-    cout << "Danh sach lien ket theo thu tu nguoc lai ban nhap vao: ";
-    printReverseList(head);
+    cout << "Danh sách từ cuối đến đầu: ";
+    list.printReverse();
 
-    deleteList(head);
     return 0;
 }
