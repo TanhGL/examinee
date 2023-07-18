@@ -5,22 +5,15 @@ struct Node {
     int value;
     Node* next;
 };
-bool KtSNT(int n){
-	bool flag = false;
-		if (n >= 2)
-			flag = true;
-			int i = 2;
-			while (i< n) {
-				if (n % i == 0) {
-					flag = false;
-					break;
-				}
-				++i;
-			}
-	if (flag == true)
-		return true;
-	else
+bool KtSNT(int x)
+{
+	if(x<2)
 		return false;
+	for(int i=2; i<=x/2; i++)
+		if(x%i==0)
+			return false;
+	return true;
+
 }
 struct LinkedList {
     Node* head;
@@ -97,19 +90,21 @@ struct LinkedList {
         cout << "Số lượng phần tử chẵn trong mảng: " << i <<endl; 
     }
     void printSNT(){
-        int i = 0,tmp = 0;
+        int i = 0,tmp = 0, x = 0;
         Node* pCur = head;
         while (pCur != NULL) {
 
             if(KtSNT(pCur->value) == true){
                 tmp = i;
+                x = pCur->value;
+                break;
             }
             i++;
             pCur = pCur->next;
             
         }
         if(tmp != 0){
-            cout << "Số nguyên tố đầu tiên trong mảng là: " << tmp  <<endl;
+            cout << "Vị trí số nguyên tố đầu tiên trong mảng là " << tmp  << " với giá trị là: " <<x << endl;
         }
         else
          cout << "Không có số nguyên tố trong mảng" << endl;
