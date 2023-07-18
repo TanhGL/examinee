@@ -2,75 +2,135 @@
 using namespace std;
 
 struct Node {
-    int value;
+    int data;
     Node* next;
 };
 
-class LinkedList {
-    Node* head;
-    Node* tail;
+void insert(Node** head_ref, int new_data) {
+    Node* new_node = new Node();
+    new_node->data = new_data;
+    new_node->next = (*head_ref);
+    (*head_ref) = new_node;
+}
 
-public:
-    LinkedList() {
-        head = NULL;
-        tail = NULL;
+void printList(Node* node) {
+    while (node != NULL) {
+        cout << node->data << " ";
+        node = node->next;
     }
+}
 
-    void addTail(int value) {
-        Node* newNode = new Node;
-        newNode->value = value;
-        newNode->next = NULL;
+void printListReverse(Node* node) {
+    if (node == NULL) {
+        return;
+    }
+    printListReverse(node->next);
+    cout << node->data << " ";
+}
 
-        if (head == NULL) {
-            head = tail = newNode;
-        } else {
-            tail->next = newNode;
-            tail = newNode;
+int countNodes(Node* head) {
+    int count = 0;
+    Node* current = head;
+    while (current != NULL) {
+        count++;
+        current = current->next;
+    }
+    return count;
+}
+
+int countEvenNodes(Node* head) {
+    int count = 0;
+    Node* current = head;
+    while (current != NULL) {
+        if (current->data % 2 == 0) {
+            count++;
+        }
+        current = current->next;
+    }
+    return count;
+}
+
+int countOddNodes(Node* head) {
+    int count = 0;
+    Node* current = head;
+    while (current != NULL) {
+        if (current->data % 2 != 0) {
+            count++;
+        }
+        current = current->next;
+    }
+    return count;
+}
+
+bool isPrime(int n) {
+    if (n <= 1) {
+        return false;
+    }
+    for (int i = 2; i < n; i++) {
+        if (n % i == 0) {
+            return false;
         }
     }
+    return true;
+}
 
-    void print() {
-        Node* pCur = head;
-        while (pCur != NULL) {
-            cout << pCur->value << " ";
-            pCur = pCur->next;
+void printPrimePositions(Node* head) {
+    int position = 0;
+    bool foundPrime = false;
+
+    while (head != NULL) {
+        if (isPrime(head->data)) {
+            cout << position << " ";
+            foundPrime = true;
+            break; // Thêm break ở đây để chỉ xuất vị trí số nguyên tố đầu tiên
         }
-        cout << endl;
+        position++;
+        head = head->next;
     }
 
-    void printReverse() {
-        printReverseUtil(head);
-        cout << endl;
+    if (!foundPrime) {
+        cout << "Khong co snt";
     }
-
-private:
-    void printReverseUtil(Node* node) {
-        if (node == NULL) {
-            return;
-        }
-        printReverseUtil(node->next);
-        cout << node->value << " ";
-    }
-};
+}
 
 int main() {
-    LinkedList list;
-    int value;
 
-    //cout << "Nhập các số nguyên theo thứ tự tăng dần (dừng khi gặp -1):\n";
-    while (true) {
+    Node* head = NULL;
+
+    // Nhập giá trị từ bàn phím
+    int value = 0;
+
+    while (value != -1) {
+
         cin >> value;
-        if (value == -1) {
-            break;
+
+        if (value != -1) {
+            insert(&head, value);
         }
-        list.addTail(value);
     }
 
-    cout << "Danh sách từ đầu đến cuối: ";
-    list.print();
+    // Xuất từ đầu đến cuối
+    cout << "Danh sach cac so trong danh sach: ";
+    
+    printList(head);
 
-    cout << "Danh sách từ cuối đến đầu: ";
-    list.printReverse();
+    
+     // Xuất từ cuối lên đầu
+     cout << "\nDanh sach cac so trong danh sach theo thu tu nguoc lai: ";
+     printListReverse(head);
 
-    return 0;
+     // Đếm số lượng phần tử trong danh sách
+     cout << "\nSo luong phan tu trong danh sach: " << countNodes(head);
+
+     // Đếm số lượng phần tử chẵn trong danh sách
+     cout << "\nSo luong phan tu chan trong danh sach: " << countEvenNodes(head);
+
+     // Đếm số lượng phần tử lẻ trong danh sách
+     cout << "\nSo luong phan tu le trong danh sach: " << countOddNodes(head);
+
+     // Xuất vị trí của các số nguyên tố trong danh sách
+     cout << "\nVi tri cua cac so nguyen to trong danh sach: ";
+     printPrimePositions(head);
+
+     return 0;
 }
